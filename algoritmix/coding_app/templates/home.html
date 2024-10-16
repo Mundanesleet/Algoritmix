@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Principal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .balance-section {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .module-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .module-button {
+            width: 150px;
+            height: 100px;
+            font-size: 18px;
+        }
+
+        .navigation-arrows {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .arrow-button {
+            background: none;
+            border: none;
+            font-size: 30px;
+        }
+
+        /* Estilos para la imagen del símbolo de Python */
+        .python-image-container {
+            width: 25%;
+            /* Ocupa un cuarto de la pantalla en ancho */
+            height: 25vh;
+            /* Ocupa un cuarto de la pantalla en altura (view height) */
+            margin: 0 auto;
+            /* Centra el contenedor */
+            margin-top: 20px;
+        }
+
+        .python-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            /* La imagen se ajusta al contenedor */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="balance-section">
+        <p><strong>Balance:</strong> ${{ alumno.balance }}</p>
+        <p><strong>Lecciones disponibles:</strong> {{ alumno.lecciones_disponibles }}</p>
+    </div>
+
+    <div class="container text-center mt-5">
+        <h1>Bienvenido a la Plataforma de Cursos</h1>
+        <p>Selecciona un módulo para ver las lecciones:</p>
+
+        <!-- Cuadro con la imagen del símbolo de Python -->
+        <div class="python-image-container">
+            <img src="https://www.python.org/static/community_logos/python-logo.png" alt="Python Logo"
+                class="python-image">
+        </div>
+
+        <!-- Botones de los módulos -->
+        <div class="module-buttons" id="modulos-container">
+            <!-- Se llenará con JavaScript -->
+        </div>
+
+        <!-- Flechas de navegación -->
+        <div class="navigation-arrows">
+            <button class="arrow-button" id="prevButton" onclick="navegarModulos(-1)" disabled>&#8592;</button>
+            <button class="arrow-button" id="nextButton" onclick="navegarModulos(1)">&#8594;</button>
+        </div>
+
+        <!-- Aquí se mostrarán las lecciones -->
+        <div id="lecciones-container" class="mt-4">
+            <h3>Lecciones del Módulo Seleccionado</h3>
+            <ul id="lecciones-list" class="list-group"></ul>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const leccionesPorModulo = {
+            1: ['Lección 1.1', 'Lección 1.2', 'Lección 1.3', 'Lección 1.4'],
+            2: ['Lección 2.1', 'Lección 2.2', 'Lección 2.3', 'Lección 2.4'],
+            3: ['Lección 3.1', 'Lección 3.2', 'Lección 3.3', 'Lección 3.4'],
+            4: ['Lección 4.1', 'Lección 4.2', 'Lección 4.3', 'Lección 4.4'],
+            5: ['Lección 5.1', 'Lección 5.2', 'Lección 5.3', 'Lección 5.4'],
+            6: ['Lección 6.1', 'Lección 6.2', 'Lección 6.3', 'Lección 6.4'],
+            7: ['Lección 7.1', 'Lección 7.2', 'Lección 7.3', 'Lección 7.4'],
+            8: ['Lección 8.1', 'Lección 8.2', 'Lección 8.3', 'Lección 8.4']
+        };
+
+        let modulosMostrados = 0;
+
+        function mostrarLecciones(modulo) {
+            const leccionesList = document.getElementById('lecciones-list');
+            leccionesList.innerHTML = '';  // Limpiar la lista de lecciones
+
+            leccionesPorModulo[modulo].forEach((leccion, index) => {
+                const li = document.createElement('li');
+                li.className = 'list-group-item';
+                const enlace = document.createElement('a');
+                enlace.href = `/leccion/${modulo}/${index + 1}`;
+                enlace.textContent = leccion;
+                li.appendChild(enlace);
+                leccionesList.appendChild(li);
+            });
+        }
+
+        // Función para cargar los módulos según la página de navegación
+        function cargarModulos() {
+            const modulosContainer = document.getElementById('modulos-container');
+            modulosContainer.innerHTML = '';  // Limpiar los botones de módulos anteriores
+
+            // Mostrar 4 módulos a la vez
+            const inicio = modulosMostrados * 4;
+            const fin = inicio + 4;
+
+            for (let i = inicio + 1; i <= fin && i <= 8; i++) {
+                const button = document.createElement('button');
+                button.className = 'btn btn-outline-primary module-button';
+                button.textContent = `Módulo ${i}`;
+                button.onclick = () => mostrarLecciones(i);
+                modulosContainer.appendChild(button);
+            }
+
+            // Habilitar o deshabilitar botones de navegación según el estado
+            document.getElementById('prevButton').disabled = modulosMostrados === 0;
+            document.getElementById('nextButton').disabled = modulosMostrados === 1;
+        }
+
+        // Función para navegar entre páginas de módulos
+        function navegarModulos(direccion) {
+            modulosMostrados += direccion;
+            cargarModulos();
+        }
+
+        // Cargar los primeros 4 módulos al iniciar
+        cargarModulos();
+    </script>
+</body>
+
+</html>
