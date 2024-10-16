@@ -76,8 +76,12 @@ WSGI_APPLICATION = 'algoritmix.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',           # Nombre de la base de datos (por defecto)
+        'USER': 'postgres',           # Usuario por defecto
+        'PASSWORD': '1234',  # La contraseña que has asignado a tu usuario `postgres`
+        'HOST': 'localhost',          # Si PostgreSQL está en la misma máquina
+        'PORT': '5432',               # Puerto por defecto de PostgreSQL
     }
 }
 

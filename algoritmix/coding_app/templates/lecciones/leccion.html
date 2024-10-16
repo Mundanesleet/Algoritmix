@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ modulo.nombre }} - Lección {{ leccion.orden }}</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- ACE Editor CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.min.css">
+    
+    <style>
+        /* Estilo personalizado */
+        body {
+            padding: 20px;
+        }
+
+        .editor-container {
+            height: 50vh; /* El editor ocupa la mitad superior */
+        }
+
+        .console-container {
+            height: 50vh; /* La consola ocupa la mitad inferior */
+            background-color: #f8f9fa;
+            border: 1px solid #ccc;
+            padding: 10px;
+            overflow-y: scroll;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Columna izquierda para contenido -->
+            <div class="col-md-6">
+                <h1>{{ modulo.nombre }}</h1>
+                <h2>Lección {{ leccion.orden }}: {{ leccion.titulo }}</h2>
+                <p>{{ leccion.contenido }}</p>
+            </div>
+
+            <!-- Columna derecha para el editor y consola -->
+            <div class="col-md-6">
+                <!-- Editor de código -->
+                <div class="editor-container" id="editor"></div>
+
+                <!-- Consola de resultados -->
+                <div class="console-container" id="console">
+                    <pre id="console-output">Aquí aparecerán los resultados del código.</pre>
+                </div>
+
+                <!-- Botón para ejecutar el código -->
+                <button id="run-btn" class="btn btn-primary mt-3">Ejecutar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <!-- JQuery (para algunos eventos) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- ACE Editor Script -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
+
+    <script>
+        // Inicializar el editor ACE
+        var editor = ace.edit("editor");
+        editor.setTheme("ace/theme/github"); // Tema de ACE
+        editor.session.setMode("ace/mode/python"); // Configuración del editor para Python (puedes cambiar el lenguaje si es necesario)
+        editor.setValue('# Escribe tu código aquí\nprint("Hola mundo")'); // Valor por defecto en el editor
+
+        // Función para ejecutar el código
+        $('#run-btn').click(function() {
+            var code = editor.getValue(); // Obtener el código del editor
+            // Aquí iría el código para enviar el código al servidor y ejecutar (por ejemplo, AJAX)
+            
+            // Simulamos la ejecución del código para efectos de la demostración
+            $('#console-output').text('Ejecutando...\n' + code + '\nResultado:\n' + eval(code)); 
+        });
+    </script>
+</body>
+</html>
